@@ -1,10 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const calculationOption = document.querySelector(".calculation-option")
-    const calculationOptionList = document.querySelector(".calculation-option__list")
-    const calculationOptionText = document.querySelector(".calculation-option__text")
-    const form = document.querySelector(".form")
-    const sumCredit = document.querySelector(".sum-credit")
-    const sumCreditInput = document.querySelector(".sum-credit__input")
+    const form = document.querySelector(".form");
+
+    const calculationOption = document.querySelector(".calculation-option");
+    const calculationOptionList = document.querySelector(".calculation-option__list");
+    const calculationOptionText = document.querySelector(".calculation-option__text");
+
+    const sumCredit = document.querySelector(".sum-credit");
+    const sumCreditInput = document.querySelector(".sum-credit__input");
+
+    const creditTerm = document.querySelector(".credit-term");
+    const creditTermInput = document.querySelector(".credit-term__input");
+
+    const monthOrYear = document.querySelector(".month-or-year");
+    const monthOrYearList = document.querySelector(".month-or-year__list");
+    const monthOrYearListText = document.querySelector(".month-or-year__text");
+
+
+    sumCreditInput.value = 1000000;
+    creditTermInput.value = 12;
 
     const variansOptions = [
         {
@@ -21,6 +34,17 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     ];
 
+    const monthOrYearOptions = [
+        {
+            monthoryear: 'year',
+            text: 'Лет'
+        },
+        {
+            monthoryear: 'month',
+            text: 'Месяцев'
+        },
+    ]
+
     const renderCalculationOptionList = (arr) => {
         calculationOptionList.innerHTML = "";
 
@@ -33,13 +57,32 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     }
 
+    const renderMonthOrYear = (arr) => {
+        monthOrYearList.innerHTML = "";
+
+        arr.forEach((elem) => {
+            const li = document.createElement("li");
+            li.dataset.monthoryear = elem.monthoryear
+            li.innerHTML = elem.text;
+            li.classList.add('month-or-year__item');
+            monthOrYearList.append(li);
+        })
+    }
+
     renderCalculationOptionList(variansOptions);
+    renderMonthOrYear(monthOrYearOptions);
 
     const resetActive = () => {
         calculationOption.classList.remove('active')
         calculationOptionList.classList.remove('visible')
+        calculationOption.classList.remove('transparent')
         sumCredit.classList.remove('active')
-
+        sumCredit.classList.remove('transparent')
+        creditTerm.classList.remove('active')
+        creditTerm.classList.remove('transparent');
+        monthOrYear.classList.remove('active')
+        monthOrYearList.classList.remove('visible');
+        monthOrYear.classList.remove('transparent');
     }
 
     form.addEventListener('click', (e) => {
@@ -49,8 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
             resetActive()
 
             if (!calculationOption.classList.contains('active')) {
-                calculationOption.classList.add('active')
-                calculationOptionList.classList.add('visible')
+                calculationOption.classList.add('active');
+                calculationOption.classList.add('transparent');
+                calculationOptionList.classList.add('visible');
+
 
                 calculationOptionList.addEventListener('click', (e) => {
                     if (e.target.classList.contains('calculation-option__item')) {
@@ -69,45 +114,55 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
             }
         } else if (e.target === sumCredit) {
-
-            resetActive()
+            resetActive();
 
             if (!sumCredit.classList.contains('active')) {
                 sumCredit.classList.add('active')
+                sumCredit.classList.add('transparent')
                 sumCreditInput.focus();
             }
 
+        } else if (e.target === creditTerm) {
+            resetActive();
+
+            if (!creditTerm.classList.contains('active')) {
+                creditTerm.classList.add('active')
+                creditTerm.classList.add('transparent');
+                creditTermInput.focus();
+            }
+        } else if (e.target === monthOrYear) {
+            resetActive();
+
+            if (!monthOrYear.classList.contains('active')) {
+                monthOrYear.classList.add('active');
+                monthOrYear.classList.add('transparent');
+                monthOrYearList.classList.add('visible');
+
+                monthOrYearList.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('month-or-year__item')) {
+
+                        const targetHtml = e.target.innerHTML;
+                        monthOrYearListText.innerHTML = targetHtml;
+                        monthOrYearList.classList.remove('visible');
+
+                        const index = monthOrYearOptions.map(el => el.text).indexOf(targetHtml);
+                        monthOrYearOptions.unshift(...monthOrYearOptions.splice(index, 1))
+
+                        renderMonthOrYear(monthOrYearOptions);
+
+                    }
+                })
+            }
         }
 
 
         else {
+
             resetActive()
         }
 
-
-
-
     })
 
-
-    // calculationOption.addEventListener('click', () => {
-    //     if (!calculationOption.classList.contains('active')) {
-    //         calculationOption.classList.add('active')
-    //         calculationOptionList.classList.add('visible')
-    //     } else {
-    //         calculationOption.classList.remove('active')
-    //         calculationOptionList.classList.remove('visible')
-    //     }
-    // })
-
-
-
-
-
-
-
-
-    sumCreditInput.value = 1000000
 
     const maskOptions = {
         lazy: false,
@@ -118,9 +173,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 thousandsSeparator: ' '
             }
         }
+    }
+
+    const maskOptionsCount = {
+        mask: /^[1-9]\d{0,1}$/
 
     }
 
     IMask(sumCreditInput, maskOptions);
+    IMask(creditTermInput, maskOptionsCount);
 
 });
