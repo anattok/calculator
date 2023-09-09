@@ -1,0 +1,190 @@
+:root {
+
+    --color-background: #fff;
+    --color-L100: #fff;
+    --color-D100: #171d23;
+    --color-D80: #002a3a;
+    --color-D60: #636f7d;
+    --color-D50: #707b88;
+    --color-D40: #7e8894;
+    --color-D30: #99a1ab;
+    --color-D20: #b3bac3;
+    --color-D10: #f5f5f5;
+    --color-D06: #f6f5f4;
+    --color-G300: #11693f;
+    --color-G200: #0f9d44;
+    --color-G100: #0dd149;
+    --color-G30: #c3f4d3;
+    --color-G06: #eefcf2;
+    --color-B300: #002a3a;
+    --color-B200: #0685c3;
+    --color-B100: #00afff;
+    --color-B30: #b6e6fc;
+    --color-B06: #f0faff;
+    --color-O300: #725122;
+    --color-O200: #b97311;
+    --color-O100: #ff9500;
+    --color-O30: #ffe1b8;
+    --color-O06: #fff9f0;
+    --color-V300: #2c3278;
+    --color-V200: #3e3da7;
+    --color-V100: #5047d7;
+    --color-V30: #cbc9f3;
+    --color-V06: #f3f2fc;
+    --color-R300: #59212d;
+    --color-R200: #8d1f25;
+    --color-R100: #c11d1d;
+    --color-R30: #f4bebe;
+    --color-R06: #fdf2f2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f6f5f4;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+ul>li {
+    list-style-type: none;
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: left;
+    font-size: 50px;
+    line-height: 52px;
+    margin: 40px 0;
+    color: var(--color-D80);
+}
+
+@media screen and (max-width: 1024px) {
+    h1 {
+        text-align: center;
+        font-size: 30px;
+        line-height: 38px;
+        margin-bottom: 20px;
+    }
+
+}
+
+
+
+.form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    display: flex;
+}
+
+.row {
+    display: flex;
+}
+
+/* начало блока "вариант рассчета" */
+
+.calculation-option {
+    padding: 28px 16px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+}
+
+.calculation-option label {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.calculation-option p {
+    font-size: 16px;
+
+}
+
+.calculation-option__list {
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    left: 0px;
+    padding: 8px;
+    border-radius: 12px;
+    background-color: var(--color-L100);
+    box-shadow: 0 12px 16px rgba(0, 0, 0, .06);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.calculation-option__list li {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calculation-option__list li:first-child {
+    background-color: #f5f5f5;
+
+}
+
+
+
+/* конец блока "вариант рассчета" */
+.sum-credit {
+    width: 100%;
+    padding: 28px 16px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.sum-credit label {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.sum-credit input {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    width: 100%;
+    height: auto;
+}
+
+.sum-credit input:focus {
+    outline: none;
+}
+
+
+
+
+/* активность для всех блоков */
+
+.active {
+    border: 1px solid var(--color-B100);
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+}

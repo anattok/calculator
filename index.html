@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кредитный калькулятор</title>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Кредитный калькулятор</h1>
+        <form class="form">
+            <div class="col">
+                <div class="calculation-option">
+                    <label>Вариант расчета</label>
+                    <p class="calculation-option__text">Расчет срока кредита</p>
+                    <ul class="calculation-option__list"></ul>
+                </div>
+                <div class="sum-credit">
+                    <label>Сумма кредита</label>
+                    <input class="sum-credit__input" type="text">
+                </div>
+
+                <div class="row">
+                    <input type="text" class="credit-term">
+                    <div class="month-or-year">
+                        <ul class="month-or-year__list">
+                            <li data-month-or-year="year">Лет</li>
+                            <li data-month-or-year="month">Месяцев</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="text" class="count-procent">
+                    <input type="date" class="count-procent">
+                </div>
+            </div>
+            <div class="col">
+                <button class="form__button">Рассчитать</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="./main.js"></script>
+
+</body>
+
+</html>
