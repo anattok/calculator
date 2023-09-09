@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-
-    //начало блока "вариант рассчета"
     const calculationOption = document.querySelector(".calculation-option")
     const calculationOptionList = document.querySelector(".calculation-option__list")
     const calculationOptionText = document.querySelector(".calculation-option__text")
+    const form = document.querySelector(".form")
+    const sumCredit = document.querySelector(".sum-credit")
+    const sumCreditInput = document.querySelector(".sum-credit__input")
+
     const variansOptions = [
         {
             variant: 'credit-term',
@@ -33,46 +35,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderCalculationOptionList(variansOptions);
 
+    const resetActive = () => {
+        calculationOption.classList.remove('active')
+        calculationOptionList.classList.remove('visible')
+        sumCredit.classList.remove('active')
 
-    calculationOption.addEventListener('click', () => {
-        if (!calculationOption.classList.contains('active')) {
-            calculationOption.classList.add('active')
-            calculationOptionList.classList.add('visible')
-        } else {
-            calculationOption.classList.remove('active')
-            calculationOptionList.classList.remove('visible')
+    }
+
+    form.addEventListener('click', (e) => {
+
+        if (e.target === calculationOption) {
+
+            resetActive()
+
+            if (!calculationOption.classList.contains('active')) {
+                calculationOption.classList.add('active')
+                calculationOptionList.classList.add('visible')
+
+                calculationOptionList.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('calculation-option__item')) {
+
+                        const targetHtml = e.target.innerHTML;
+                        calculationOptionText.innerHTML = targetHtml;
+                        calculationOptionList.classList.remove('visible');
+                        //находим index элемента в массиве по которому кликнули
+                        //меняем элементы местами в массиве, ставим элемент первым
+                        const index = variansOptions.map(el => el.text).indexOf(targetHtml);
+                        variansOptions.unshift(...variansOptions.splice(index, 1))
+
+                        renderCalculationOptionList(variansOptions);
+
+                    }
+                })
+            }
+        } else if (e.target === sumCredit) {
+
+            resetActive()
+
+            if (!sumCredit.classList.contains('active')) {
+                sumCredit.classList.add('active')
+                sumCreditInput.focus();
+            }
+
         }
+
+
+        else {
+            resetActive()
+        }
+
+
+
+
     })
 
-    calculationOptionList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('calculation-option__item')) {
 
-            const targetHtml = e.target.innerHTML;
-            calculationOptionText.innerHTML = targetHtml;
-            calculationOptionList.classList.remove('visible');
-            //находим index элемента в массиве по которому кликнули
-            //меняем элементы местами в массиве, ставим элемент первым
-            const index = variansOptions.map(el => el.text).indexOf(targetHtml);
-            variansOptions.unshift(...variansOptions.splice(index, 1))
+    // calculationOption.addEventListener('click', () => {
+    //     if (!calculationOption.classList.contains('active')) {
+    //         calculationOption.classList.add('active')
+    //         calculationOptionList.classList.add('visible')
+    //     } else {
+    //         calculationOption.classList.remove('active')
+    //         calculationOptionList.classList.remove('visible')
+    //     }
+    // })
 
-            renderCalculationOptionList(variansOptions);
 
-        }
-    })
 
-    //конец блока "Вариант рассчета"
 
-    //Начало блока "Сумма кредита"
-    const sumCredit = document.querySelector(".sum-credit")
-    const sumCreditInput = document.querySelector(".sum-credit__input")
 
-    sumCredit.addEventListener("click", () => {
-        if (!sumCredit.classList.contains('active')) {
-            sumCredit.classList.add('active')
-        } else {
-            sumCredit.classList.remove('active')
-        }
-    })
+
+
 
     sumCreditInput.value = 1000000
 
