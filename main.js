@@ -15,9 +15,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const monthOrYearList = document.querySelector(".month-or-year__list");
     const monthOrYearListText = document.querySelector(".month-or-year__text");
 
+    const countProcent = document.querySelector(".count-procent");
+    const countProcentInput = document.querySelector(".count-procent__input");
+
 
     sumCreditInput.value = 1000000;
     creditTermInput.value = 12;
+    countProcentInput.value = 10;
 
     const variansOptions = [
         {
@@ -83,9 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
         monthOrYear.classList.remove('active')
         monthOrYearList.classList.remove('visible');
         monthOrYear.classList.remove('transparent');
+        countProcent.classList.remove('active');
+        countProcent.classList.remove('transparent');
     }
 
-    form.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
 
         if (e.target === calculationOption) {
 
@@ -122,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sumCreditInput.focus();
             }
 
-        } else if (e.target === creditTerm) {
+        } else if (e.target === creditTerm || e.target === creditTermInput) {
             resetActive();
 
             if (!creditTerm.classList.contains('active')) {
@@ -153,6 +159,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
             }
+        } else if (e.target === countProcent || e.target === countProcentInput) {
+            resetActive();
+
+            if (!countProcent.classList.contains('active')) {
+                countProcent.classList.add('active');
+                countProcent.classList.add('transparent');
+                countProcentInput.focus();
+
+
+            }
         }
 
 
@@ -180,7 +196,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    const maskOptionsProcent = {
+        lazy: false,
+        mask: 'num %',
+        blocks: {
+            num: {
+                mask: Number,
+            }
+        }
+    }
+
     IMask(sumCreditInput, maskOptions);
     IMask(creditTermInput, maskOptionsCount);
+    IMask(countProcentInput, maskOptionsProcent);
 
 });

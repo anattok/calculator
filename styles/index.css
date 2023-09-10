@@ -67,30 +67,25 @@ h1 {
     color: var(--color-D80);
 }
 
-@media screen and (max-width: 1024px) {
-    h1 {
-        text-align: center;
-        font-size: 30px;
-        line-height: 38px;
-        margin-bottom: 20px;
-    }
-
-}
-
 
 
 .form {
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-
-
+    display: flex;
 }
+
+
 
 .row {
     display: flex;
     margin-right: 10px;
     gap: 10px;
+}
+
+.wrapper {
+    flex-grow: 1;
 }
 
 
@@ -189,6 +184,7 @@ h1 {
     transition: all 0.2s;
     flex: 0 0 50%;
     max-width: 50%;
+    margin-bottom: 10px;
 
 }
 
@@ -211,6 +207,7 @@ h1 {
     outline: none;
 }
 
+/* начало блока "Вариант расчета" */
 .month-or-year {
     padding: 28px 16px 10px;
     background-color: #f5f5f5;
@@ -220,6 +217,7 @@ h1 {
     transition: all 0.2s;
     flex: 0 0 50%;
     max-width: 50%;
+    margin-bottom: 10px;
 
 }
 
@@ -265,6 +263,137 @@ h1 {
 
 }
 
+/* начало блока "Ставка" */
+.count-procent {
+    padding: 28px 16px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.count-procent input {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.count-procent input:focus {
+    outline: none;
+}
+
+.count-procent label {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 14px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* начало блока Калькуляция подсчет */
+.calculation {
+    width: 370px;
+    border-radius: 20px;
+    border: 1px solid var(--color-D10);
+    margin-left: 10px;
+    padding: 30px;
+}
+
+.calculation__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+
+}
+
+.calculation__text {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    color: var(--color-D60);
+    opacity: 0.9;
+}
+
+.calculation__button {
+    width: 100%;
+    border-color: transparent;
+    background-color: var(--color-B300);
+    color: var(--color-L100);
+    padding: 0 16px;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calculation__button:hover {
+    background-color: var(--color-D100);
+}
+
+.question {
+    margin: 10px 0;
+    color: var(--color-D60);
+    font-family: var(--font-open-sans);
+    font-size: 14px;
+    line-height: 20px;
+    position: relative;
+
+}
+
+.question span {
+    pointer-events: none;
+}
+
+.question__help {
+    width: 260px;
+    height: 150px;
+    background-color: var(--color-D100);
+    color: var(--color-B06);
+    position: absolute;
+    padding: 15px;
+    border-radius: 20px;
+    bottom: 30px;
+    left: -20px;
+    opacity: 0;
+    transition: 0.2s;
+    z-index: -1;
+    text-align: center;
+
+}
+
+.question__help::after {
+    content: '';
+    position: absolute;
+    left: 115px;
+    bottom: -20px;
+    border: 10px solid transparent;
+    border-top: 10px solid var(--color-D100);
+}
+
+.question svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    color: var(--color-D100);
+    ;
+}
+
+.question svg:hover+.question__help {
+    transition: 0.5s;
+    opacity: 1;
+    z-index: 1;
+}
+
 /* активность для всех блоков */
 
 .active {
@@ -278,4 +407,33 @@ h1 {
 
 .transparent {
     background-color: transparent;
+}
+
+
+@media screen and (max-width: 1024px) {
+    .form {
+        flex-direction: column;
+    }
+
+
+
+    h1 {
+        text-align: center;
+        font-size: 30px;
+        line-height: 38px;
+        margin-bottom: 20px;
+    }
+
+    .calculation {
+        margin-top: 20px;
+        margin-left: 0px;
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .calculation-option label {
+        font-size: 14px;
+    }
 }
