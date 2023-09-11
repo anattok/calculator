@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const maskOptionsCount = {
-        mask: /^[1-9]\d{0,1}$/
+        mask: /^[1-9]\d{0,2}$/
 
     }
 
