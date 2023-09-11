@@ -9,6 +9,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://s91588.cdn.ngenix.net/shared/static/favicon.ico">
+    <link rel="icon" href="https://s91588.cdn.ngenix.net/shared/static/favicon.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="https://s91588.cdn.ngenix.net/shared/static/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://s91588.cdn.ngenix.net/shared/static/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72"
+        href="https://s91588.cdn.ngenix.net/shared/static/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114"
+        href="https://s91588.cdn.ngenix.net/shared/static/apple-touch-icon-114x114.png">
+    <link rel="icon" type="image/png" sizes="192x192"
+        href="https://s91588.cdn.ngenix.net/shared/static/android-icon-192x192.png">
 </head>
 
 <body>
@@ -18,7 +28,7 @@
             <div class="col wrapper">
                 <div class="calculation-option">
                     <label>Вариант расчета</label>
-                    <p class="calculation-option__text">Расчет срока кредита</p>
+                    <p class="calculation-option__text" data-variant="monthly-payment">Расчет ежемесячного платежа</p>
                     <ul class="calculation-option__list"></ul>
                 </div>
                 <div class="sum-credit">
@@ -32,45 +42,48 @@
                     </div>
                     <div class="month-or-year">
                         <label>Вариант расчета</label>
-                        <p class="month-or-year__text">Месяцев</p>
+                        <p class="month-or-year__text" data-monthoryear="month">Месяцев</p>
                         <ul class="month-or-year__list"></ul>
                     </div>
                 </div>
                 <div class="row">
                     <div class="count-procent">
-                        <label>Вариант расчета</label>
+                        <label>Ставка</label>
                         <input type="text" class="count-procent__input">
                     </div>
-                    <input type="date" class="count-procent">
+                    <input type="date" class="start-date__input">
                 </div>
-                <div class="question">
-                    <span>Тип платежей</span>
-                    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10 17.25A7.25 7.25 0 0 1 2.75 10 7.25 7.25 0 0 1 10 2.75 7.25 7.25 0 0 1 17.25 10 7.25 7.25 0 0 1 10 17.25Z"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                        <path
-                            d="M10 11.042v-.209c0-.68.42-1.05.842-1.333.412-.277.825-.64.825-1.306a1.666 1.666 0 1 0-3.334 0"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                        <path d="M9.997 13a.75.75 0 1 0 .007 1.5.75.75 0 0 0-.007-1.5Z" fill="currentColor"></path>
-                    </svg>
-                    <div class="question__help">Аннуитетный – равными ежемесячными платежами Дифференцированный – с
-                        уменьшением суммы платежа.
-                        Сначала платите больше, в конце меньше
+                <div class="bottom">
+                    <div class="question">
+                        <span>Тип платежей</span>
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 17.25A7.25 7.25 0 0 1 2.75 10 7.25 7.25 0 0 1 10 2.75 7.25 7.25 0 0 1 17.25 10 7.25 7.25 0 0 1 10 17.25Z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                            <path
+                                d="M10 11.042v-.209c0-.68.42-1.05.842-1.333.412-.277.825-.64.825-1.306a1.666 1.666 0 1 0-3.334 0"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                            <path d="M9.997 13a.75.75 0 1 0 .007 1.5.75.75 0 0 0-.007-1.5Z" fill="currentColor"></path>
+                        </svg>
+                        <div class="question__help">Аннуитетный – равными ежемесячными платежами Дифференцированный – с
+                            уменьшением суммы платежа.
+                            Сначала платите больше, в конце меньше
+                        </div>
+                    </div>
+                    <div class="toggle-button">
+                        <label class="box-radio">
+                            <input type="radio" id="annuity" name="typeCredit" checked="checked" value="annuity">
+                            <span class="checkmark">Аннуитетный</span>
+                        </label>
+                        <label class="box-radio">
+                            <input type="radio" id="differentiated" name="typeCredit" value="differentiated">
+                            <span class="checkmark">Дифференцированый</span>
+                        </label>
                     </div>
                 </div>
-                <div class="toggle-button">
-                    <label class="box-radio">
-                        <input type="radio" id="annuity" name="typeCredit" checked="checked" value="1">
-                        <span class="checkmark">Аннуитетный</span>
-                    </label>
-                    <label class="box-radio">
-                        <input type="radio" id="differentiated" name="typeCredit" value="2">
-                        <span class="checkmark">Дифференцированый</span>
-                    </label>
-                </div>
+
             </div>
             <div class="col">
                 <div class="calculation">
@@ -181,8 +194,8 @@
                     </div>
                     <button class="calculation__button">Рассчитать</button>
                 </div>
-
             </div>
+        </form>
     </div>
     <script src="https://unpkg.com/imask"></script>
     <script src="./main.js"></script>

@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const countProcent = document.querySelector(".count-procent");
     const countProcentInput = document.querySelector(".count-procent__input");
 
+    const startDateInput = document.querySelector(".start-date__input");
+
+
+    const bottomBox = document.querySelector(".bottom");
+
+    const buttonTotal = document.querySelector(".calculation__button");
+
+    const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
+
 
     sumCreditInput.value = 1000000;
     creditTermInput.value = 12;
@@ -25,16 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const variansOptions = [
         {
-            variant: 'credit-term',
-            text: 'Расчет срока кредита'
-        },
-        {
             variant: 'monthly-payment',
             text: 'Расчет ежемесячного платежа'
         },
         {
             variant: 'maximum-loan-amount',
             text: 'Расчет максимальной суммы кредита'
+        },
+        {
+            variant: 'credit-term',
+            text: 'Расчет срока кредита'
         },
     ];
 
@@ -54,12 +63,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         arr.forEach((elem) => {
             const li = document.createElement("li");
-            li.dataset.variant = elem.variant
             li.innerHTML = elem.text;
             li.classList.add('calculation-option__item');
+            li.dataset.variant = elem.variant;
             calculationOptionList.append(li);
         })
     }
+    renderCalculationOptionList(variansOptions);
 
     const renderMonthOrYear = (arr) => {
         monthOrYearList.innerHTML = "";
@@ -72,8 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
             monthOrYearList.append(li);
         })
     }
-
-    renderCalculationOptionList(variansOptions);
     renderMonthOrYear(monthOrYearOptions);
 
     const resetActive = () => {
@@ -102,12 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 calculationOption.classList.add('transparent');
                 calculationOptionList.classList.add('visible');
 
-
+                //блок"Вариант Рассчета"
                 calculationOptionList.addEventListener('click', (e) => {
                     if (e.target.classList.contains('calculation-option__item')) {
 
                         const targetHtml = e.target.innerHTML;
                         calculationOptionText.innerHTML = targetHtml;
+                        calculationOptionText.dataset.variant = e.target.dataset.variant;
                         calculationOptionList.classList.remove('visible');
                         //находим index элемента в массиве по которому кликнули
                         //меняем элементы местами в массиве, ставим элемент первым
@@ -115,10 +124,34 @@ document.addEventListener('DOMContentLoaded', function () {
                         variansOptions.unshift(...variansOptions.splice(index, 1))
 
                         renderCalculationOptionList(variansOptions);
+                    }
+                    //условие для "Рассчет максимальной суммы кредита"
+                    if ((e.target.getAttribute('data-variant') === 'maximum-loan-amount')) {
+                        bottomBox.classList.add("hidden");
+                        sumCreditInput.value = 20000;
+                        sumCredit.querySelector('label').innerHTML = 'Ежемесячный платеж';
 
+                        maskInput();
+                    }
+                    //условие для "Рассчет срока кредита"
+                    else if (e.target.getAttribute('data-variant') === 'credit-term') {
+                        bottomBox.classList.add("hidden");
+                        sumCreditInput.value = 1000000;
+                        sumCredit.querySelector('label').innerHTML = 'Сумма кредита';
+
+                        maskInput();
+                    }
+                    //условие для "Расчет ежемесячного платежа"
+                    else if (e.target.getAttribute('data-variant') === 'monthly-payment') {
+                        bottomBox.classList.remove("hidden");
+                        sumCreditInput.value = 1000000;
+                        sumCredit.querySelector('label').innerHTML = 'Сумма кредита';
+
+                        maskInput();
                     }
                 })
             }
+            //блок"Сумма Кредита"
         } else if (e.target === sumCredit) {
             resetActive();
 
@@ -127,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sumCredit.classList.add('transparent')
                 sumCreditInput.focus();
             }
-
+            //блок"Срок Кредита"
         } else if (e.target === creditTerm || e.target === creditTermInput) {
             resetActive();
 
@@ -136,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 creditTerm.classList.add('transparent');
                 creditTermInput.focus();
             }
+            //блок"Месяцев или лет"
         } else if (e.target === monthOrYear) {
             resetActive();
 
@@ -150,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const targetHtml = e.target.innerHTML;
                         monthOrYearListText.innerHTML = targetHtml;
                         monthOrYearList.classList.remove('visible');
-
+                        monthOrYearListText.dataset.monthoryear = e.target.dataset.monthoryear;
                         const index = monthOrYearOptions.map(el => el.text).indexOf(targetHtml);
                         monthOrYearOptions.unshift(...monthOrYearOptions.splice(index, 1))
 
@@ -159,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
             }
+            //блок"Ставка"
         } else if (e.target === countProcent || e.target === countProcentInput) {
             resetActive();
 
@@ -169,6 +204,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             }
+
+            //действия кнпки 'Рассчет'"
+        } else if (e.target === buttonTotal) {
+            e.preventDefault();
+
+            const option = calculationOptionText.getAttribute('data-variant');
+            const summ = sumCreditInput.value.split(" ").slice(0, -1).join("");
+            const term = creditTermInput.value;
+            const monthOrYearOption = monthOrYearListText.getAttribute('data-monthoryear');
+            const bid = countProcentInput.value.split(" ").slice(0, -1).join("");
+            const dateValue = startDateInput.value;
+
+
+            let paymentType;
+
+            if (bottomBox.classList.contains("hidden")) {
+                paymentType = null
+            } else {
+                for (const button of typeCredit) {
+                    if (button.checked) {
+                        paymentType = button.value
+                    }
+                }
+            }
+
+            const data = {
+                calculationOptionValue: option,
+                summValue: summ,
+                termValue: term,
+                monthOrYearOptionValue: monthOrYearOption,
+                bidValue: bid,
+                dateValue: dateValue,
+                paymentTypeValue: paymentType
+            }
+
+            console.log(data)
+
         }
 
 
@@ -179,35 +251,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     })
 
-
-    const maskOptions = {
-        lazy: false,
-        mask: 'num ₽',
-        blocks: {
-            num: {
-                mask: Number,
-                thousandsSeparator: ' '
+    function maskInput() {
+        const maskOptions = {
+            lazy: false,
+            mask: 'num ₽',
+            blocks: {
+                num: {
+                    mask: Number,
+                    thousandsSeparator: ' '
+                }
             }
         }
-    }
 
-    const maskOptionsCount = {
-        mask: /^[1-9]\d{0,2}$/
+        const maskOptionsCount = {
+            mask: /^[1-9]\d{0,2}$/
 
-    }
+        }
 
-    const maskOptionsProcent = {
-        lazy: false,
-        mask: 'num %',
-        blocks: {
-            num: {
-                mask: Number,
+        const maskOptionsProcent = {
+            lazy: false,
+            mask: 'num %',
+            blocks: {
+                num: {
+                    mask: Number,
+                }
             }
         }
+
+        IMask(sumCreditInput, maskOptions);
+        IMask(creditTermInput, maskOptionsCount);
+        IMask(countProcentInput, maskOptionsProcent);
+
+
+
     }
 
-    IMask(sumCreditInput, maskOptions);
-    IMask(creditTermInput, maskOptionsCount);
-    IMask(countProcentInput, maskOptionsProcent);
+    maskInput();
 
 });

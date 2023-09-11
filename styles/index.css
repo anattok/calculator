@@ -453,6 +453,10 @@ h1 {
     background-color: transparent;
 }
 
+.hidden {
+    display: none;
+}
+
 
 @media screen and (max-width: 1024px) {
     .form {
