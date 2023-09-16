@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const buttonTotal = document.querySelector(".calculation__button");
 
     const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
+    const resultImg = document.querySelector(".result__image");
+
+    const paymentScheduleList = document.querySelector('.payment-schedule__list')
+
 
 
     sumCreditInput.value = 1000000;
@@ -99,6 +103,337 @@ document.addEventListener('DOMContentLoaded', function () {
         countProcent.classList.remove('transparent');
     }
 
+
+    //ОПИСАНИЕ ФУНКЦИИ calculatePayment 
+    // principal => СУММА КРЕДИТА
+    // annualInterestRate => СТАВКА
+    // monthOrYear => МЕСЯЦЕВ ИЛИ ЛЕТ
+    // numberOfPayments => КОЛИЧЕСТВО (МЕСЯЦЕВ ИЛИ ЛЕТ)
+    // date => ДАТА
+    // type => ТИП ПЛАТЕЖА (АНУИТЕТНЫЙ ИЛИ ДИФФЕРЕНЦИРОВАННЫЙ)
+    const calculatePayment = (principal, annualInterestRate, monthOrYear, numberOfPayments, date) => {
+        // Точное количество месяцев
+        let monthCount;
+        //Тип платежа
+        let paymentType;
+
+        if (monthOrYear === "year") {
+            monthCount = numberOfPayments * 12;
+        } else if (monthOrYear === "month") {
+            monthCount = numberOfPayments;
+        } else {
+            throw new Error("Некорректное значение для monthOrYear. Используйте 'year' или 'month'.");
+        }
+
+        // Создаем массив для хранения платежей
+        const result = [];
+
+
+        //Вытаскиваем значение радиокнопки
+        for (const button of typeCredit) {
+            if (button.checked) {
+                paymentType = button.value
+            }
+        }
+
+        //Определение типа платежа аннуитентный/дифференцированный
+        if (paymentType === 'annuity') {
+
+            // Преобразование годовой процентной ставки в месячную и вычисление месячной ставки
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+
+            // Вычисление аннуитетного коэффициента
+            const annuityFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, monthCount)) /
+                (Math.pow(1 + monthlyInterestRate, monthCount) - 1);
+
+            // Рассчитываем аннуитетный платеж
+            const annuityPayment = principal * annuityFactor;
+
+            // Итерируемся через каждый месяц и рассчитываем платежи
+            let balance = principal;
+            for (let i = 1; i <= monthCount; i++) {
+                const interestPayment = balance * monthlyInterestRate;
+                const principalPayment = annuityPayment - interestPayment;
+                balance -= principalPayment;
+
+                const paymentDate = new Date(date);
+                paymentDate.setMonth(paymentDate.getMonth() + i);
+
+                const payment = {
+                    id: i,
+                    date: paymentDate.toISOString().slice(0, 10),
+                    summ: annuityPayment.toFixed(2),
+                    debt: principalPayment.toFixed(2),
+                    procent: interestPayment.toFixed(2),
+                    balance: balance.toFixed(2),
+                };
+
+                result.push(payment);
+            }
+
+
+
+        } else if (paymentType === 'differentiated') {
+
+        }
+
+
+
+
+
+
+
+        paymentScheduleList.innerHTML = "";
+
+        result.forEach(elem => {
+            const paymentScheduleItem = document.createElement("li");
+            paymentScheduleItem.classList.add("payment-schedule__item")
+            const id = document.createElement("span");
+            const data = document.createElement("span");
+            const summ = document.createElement("span");
+            const debt = document.createElement("span");
+            const procent = document.createElement("span");
+            const balance = document.createElement("span");
+            id.innerHTML = elem.id;
+            data.innerHTML = elem.date;
+            summ.innerHTML = elem.summ;
+            debt.innerHTML = elem.debt;
+            procent.innerHTML = elem.procent;
+            balance.innerHTML = elem.balance;
+            paymentScheduleItem.append(id);
+            paymentScheduleItem.append(data);
+            paymentScheduleItem.append(summ);
+            paymentScheduleItem.append(debt);
+            paymentScheduleItem.append(procent);
+            paymentScheduleItem.append(balance);
+            paymentScheduleList.append(paymentScheduleItem);
+        })
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    //рассчет ежемесячного платежа (АНУИТЕТНЫЙ)
+    const calculateAnnuityPayment = (principal, annualInterestRate, monthOrYear, numberOfPayments, date) => {
+        let monthCount;
+
+        if (monthOrYear === "year") {
+            monthCount = numberOfPayments * 12;
+        } else if (monthOrYear === "month") {
+            monthCount = numberOfPayments;
+        } else {
+            throw new Error("Некорректное значение для monthOrYear. Используйте 'year' или 'month'.");
+        }
+
+        // Преобразование годовой процентной ставки в месячную и вычисление месячной ставки
+        const monthlyInterestRate = (annualInterestRate / 100) / 12;
+
+        // Вычисление аннуитетного коэффициента
+        const annuityFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, monthCount)) /
+            (Math.pow(1 + monthlyInterestRate, monthCount) - 1);
+
+        // Рассчитываем аннуитетный платеж
+        const annuityPayment = principal * annuityFactor;
+
+        const result = []
+
+        // Итерируемся через каждый месяц и рассчитываем платежи
+        let balance = principal;
+        for (let i = 1; i <= monthCount; i++) {
+            const interestPayment = balance * monthlyInterestRate;
+            const principalPayment = annuityPayment - interestPayment;
+            balance -= principalPayment;
+
+            const paymentDate = new Date(date);
+            paymentDate.setMonth(paymentDate.getMonth() + i);
+
+            const payment = {
+                id: i,
+                date: paymentDate.toISOString().slice(0, 10),
+                summ: annuityPayment.toFixed(2),
+                debt: principalPayment.toFixed(2),
+                procent: interestPayment.toFixed(2),
+                balance: balance.toFixed(2),
+            };
+
+            result.push(payment);
+        }
+
+        paymentScheduleList.innerHTML = "";
+
+        result.forEach(elem => {
+            const paymentScheduleItem = document.createElement("li");
+            paymentScheduleItem.classList.add("payment-schedule__item")
+            const id = document.createElement("span");
+            const data = document.createElement("span");
+            const summ = document.createElement("span");
+            const debt = document.createElement("span");
+            const procent = document.createElement("span");
+            const balance = document.createElement("span");
+            id.innerHTML = elem.id;
+            data.innerHTML = elem.date;
+            summ.innerHTML = elem.summ;
+            debt.innerHTML = elem.debt;
+            procent.innerHTML = elem.procent;
+            balance.innerHTML = elem.balance;
+            paymentScheduleItem.append(id);
+            paymentScheduleItem.append(data);
+            paymentScheduleItem.append(summ);
+            paymentScheduleItem.append(debt);
+            paymentScheduleItem.append(procent);
+            paymentScheduleItem.append(balance);
+            paymentScheduleList.append(paymentScheduleItem);
+        })
+    };
+
+    //рассчет ежемесячного платежа (ДИФФЕРЕНЦИРОВАННЫЙ)
+    const calculateDifferentiatedPayment = (principal, annualInterestRate, monthOrYear, numberOfPayments, date) => {
+
+        let monthCount;
+        let principalAmount = principal;
+
+        if (monthOrYear === "year") {
+            monthCount = Number(numberOfPayments) * 12;
+        } else if (monthOrYear === "month") {
+            monthCount = Number(numberOfPayments);
+        } else {
+            throw new Error("Некорректное значение для monthOrYear. Используйте 'year' или 'month'.");
+        }
+
+        // платеж по основному долгу
+        const principalPayment = parseFloat(Number((principal / monthCount)).toFixed(2));
+
+        const result = []
+        let countAllProcent = 0
+
+
+        for (let i = 1; i < monthCount + 1; i++) {
+            const currentDate = new Date(date);
+            currentDate.setMonth(currentDate.getMonth() + i);
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
+
+
+            //получаем количество дней в месяце
+            const lastDay = new Date(year, month, 0).getDate();
+
+            //сколько оталось тела кредита
+            principalAmount = parseFloat(Number(principalAmount - principalPayment).toFixed(2));
+
+            //начисленные проценты в этом месяце, зависит от каоличества дней в месяце
+            const countProcent = parseFloat(Number(((principalAmount * annualInterestRate * lastDay) / 365) / 100).toFixed(2));
+
+            //сколько составит платеж в текущем месяце
+            const totalMonthPayment = parseFloat(Number(principalPayment + countProcent).toFixed(2));
+
+            // "ДАТА ПЛАТЕЖА": normalTypeDate,
+            // "СУММА ПЛАТЕЖА": totalMonthPayment,
+            // "ПОГАШЕНИЕ ДОЛГА": principalPayment,
+            // "ПОГАШЕНИЕ ПРОЦЕНТОВ": countProcent,
+            // "ОСТАТОК ДОЛГА": principalAmount,
+
+            result.push({
+                id: i,
+                "date": currentDate.toISOString().slice(0, 10),
+                "summ": totalMonthPayment,
+                "debt": principalPayment,
+                "procent": countProcent,
+                "balance": principalAmount,
+
+            })
+
+
+
+            //подсчитаем все проценты переплаты
+            countAllProcent = countAllProcent + countProcent;
+
+        }
+
+        paymentScheduleList.innerHTML = "";
+
+        result.forEach(elem => {
+            const paymentScheduleItem = document.createElement("li");
+            paymentScheduleItem.classList.add("payment-schedule__item")
+            const id = document.createElement("span");
+            const data = document.createElement("span");
+            const summ = document.createElement("span");
+            const debt = document.createElement("span");
+            const procent = document.createElement("span");
+            const balance = document.createElement("span");
+            id.innerHTML = elem.id;
+            data.innerHTML = elem.date;
+            summ.innerHTML = elem.summ;
+            debt.innerHTML = elem.debt;
+            procent.innerHTML = elem.procent;
+            balance.innerHTML = elem.balance;
+            paymentScheduleItem.append(id);
+            paymentScheduleItem.append(data);
+            paymentScheduleItem.append(summ);
+            paymentScheduleItem.append(debt);
+            paymentScheduleItem.append(procent);
+            paymentScheduleItem.append(balance);
+            paymentScheduleList.append(paymentScheduleItem);
+        })
+
+
+
+    }
+
+
+
+
+    //функция вывода рассчитаных данных
+    // const paymentRender = (totalPayout, monthlyPayment, interestCharges, maximumLoanAmount) => {
+    //     const wrapper = document.querySelector('.result__payment');
+    //     // wrapper.innerHTML = "";
+    //     resultImg.classList.add("hidden");
+
+    //     const title = document.createElement("span")
+    //     title.classList.add('result__payment-title');
+    //     const titleCount = document.createElement("span")
+    //     titleCount.classList.add('result__payment-count_count');
+
+
+    //     const procent = document.createElement("span")
+    //     procent.classList.add('result__payment-procent');
+    //     const total = document.createElement("span")
+    //     total.classList.add('result__payment-total');
+
+    //     const procentCount = document.createElement("span")
+    //     procentCount.classList.add('result__payment-procent_count');
+    //     const totalCount = document.createElement("span")
+    //     totalCount.classList.add('result__payment-total_count');
+
+    //     const rowWrap = document.createElement("div").classList.add('row');
+
+    //     title.innerHTML = monthlyPayment
+    //     titleCount.innerHTML = monthlyPayment
+    //     procent.innerHTML = monthlyPayment
+    //     procentCount.innerHTML = monthlyPayment
+    //     total.innerHTML = monthlyPayment
+    //     totalCount.innerHTML = monthlyPayment
+
+    //     wrapper.append(title);
+    //     wrapper.append(titleCount);
+
+    //     rowWrap.append(procent);
+    //     // row.append(total);
+
+    //     wrapper.append(rowWrap);
+
+    // }
+
+
+
     document.addEventListener('click', (e) => {
 
         if (e.target === calculationOption) {
@@ -150,6 +485,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         maskInput();
                     }
                 })
+            } else if (calculationOption.classList.contains('active')) {
+                resetActive()
             }
             //блок"Сумма Кредита"
         } else if (e.target === sumCredit) {
@@ -209,15 +546,16 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (e.target === buttonTotal) {
             e.preventDefault();
 
+            paymentScheduleList.classList.add("visible")
+
             const option = calculationOptionText.getAttribute('data-variant');
             const summ = sumCreditInput.value.split(" ").slice(0, -1).join("");
             const term = creditTermInput.value;
             const monthOrYearOption = monthOrYearListText.getAttribute('data-monthoryear');
             const bid = countProcentInput.value.split(" ").slice(0, -1).join("");
             const dateValue = startDateInput.value;
-
-
             let paymentType;
+
 
             if (bottomBox.classList.contains("hidden")) {
                 paymentType = null
@@ -239,7 +577,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 paymentTypeValue: paymentType
             }
 
-            console.log(data)
+
+            //выбор рассчета типа платежа радиокнопками аннуитентный/дифференцированный
+            if (paymentType === 'annuity') {
+                console.log(calculateAnnuityPayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue))
+                console.log(data.dateValue)
+            } else if (paymentType === 'differentiated') {
+                console.log("differentiated")
+                calculateDifferentiatedPayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue)
+            }
+
 
         }
 
