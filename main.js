@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
     const resultImg = document.querySelector(".result__image");
 
+    const paymentSchedule = document.querySelector('.payment-schedule')
     const paymentScheduleList = document.querySelector('.payment-schedule__list')
 
 
@@ -546,6 +547,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (e.target === buttonTotal) {
             e.preventDefault();
 
+            paymentSchedule.classList.add("visible")
             paymentScheduleList.classList.add("visible")
 
             const option = calculationOptionText.getAttribute('data-variant');

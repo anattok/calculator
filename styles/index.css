@@ -450,20 +450,61 @@ h1 {
     box-shadow: 0 -2px 6px rgba(0, 0, 0, .02), 0 10px 14px rgba(20, 36, 56, .06);
 }
 
-.payment-schedule__list {
+.payment-schedule {
+    display: none;
     margin-top: 50px;
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-    display: none;
+    min-width: 900px;
+    overflow-x: scroll;
 }
 
+/* .payment-schedule__list {
+    
+} */
+.payment-schedule_top-title,
 .payment-schedule__item {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: 30px repeat(5, 1fr);
     align-items: center;
-
     padding: 16px 20px;
+
+}
+
+.payment-schedule_top-title {
+    color: var(--color-D30);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    text-transform: uppercase;
+}
+
+.payment-schedule_top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.payment-schedule_top span {
+    background-color: var(--color-G30);
+    display: inline-block;
+    width: 52px;
+    height: 52px;
+    padding: 14px;
+    border-radius: 14px;
+}
+
+.payment-schedule_top svg {
+    width: 100%;
+
+}
+
+.payment-schedule_top p {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
 }
 
 .payment-schedule__item:nth-child(even) {
@@ -513,7 +554,20 @@ h1 {
         width: 100%;
         padding: 15px;
     }
+
+    .payment-schedule__item {
+        padding: 16px 20px;
+        font-size: 14px;
+    }
+
+
+
+
 }
+
+
+
+
 
 @media screen and (max-width: 480px) {
     .calculation-option label {
