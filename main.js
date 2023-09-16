@@ -13,12 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const countProcentInput = document.querySelector(".count-procent__input");
     const startDateInput = document.querySelector(".start-date__input");
     const bottomBox = document.querySelector(".bottom");
+    const calculationTotal = document.querySelector(".calculation__content");
     const buttonTotal = document.querySelector(".calculation__button");
-    const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
+    const typeCredit = document.querySelectorAll('input[name="typeCredit"]');
     const startPaymentDate = document.querySelector(".start-data");
     const startPaymentDateInput = document.querySelector(".start-date__input");
-    const paymentSchedule = document.querySelector('.payment-schedule')
-    const paymentScheduleList = document.querySelector('.payment-schedule__list')
+    const paymentSchedule = document.querySelector('.payment-schedule');
+    const paymentScheduleList = document.querySelector('.payment-schedule__list');
+    const resultDiv = document.querySelector('.result');
+    const resultImg = document.querySelector('.result__image');
+
+
 
 
     sumCreditInput.value = 1000000;
@@ -173,6 +178,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPayout += Number(annuityPayment);
             }
 
+            resultImg.classList.add("hidden");
+
+
+            calculationTotal.classList.add("total");
+
+            const totalDiv = document.createElement("div");
+            totalDiv.classList.add('total-wrapper')
+            totalDiv.innerHTML = `
+            <div class="total-payment">
+                <span>Ежемесячный платеж:</span>
+                <span>${annuityPayment.toFixed(2)}</span>
+            </div>
+            <div class="total-procent">
+                <span>Начисленные проценты:</span>
+                <span>${interestCharges.toFixed(2)}</span>
+            </div>
+            <div class="total-total">
+                <span>Общая выплата:</span>
+                <span>${totalPayout.toFixed(2)}</span>
+            </div>
+            
+            `;
+
+            resultDiv.innerHTML = "";
+
+            resultDiv.append(totalDiv)
+
+
+
+
             console.log("Ежемесячный платеж", annuityPayment.toFixed(2))
             console.log("Начисленные проценты", interestCharges.toFixed(2))
             console.log("Общая выплата", totalPayout.toFixed(2))
@@ -240,6 +275,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPayout += Number(totalMonthPayment);
 
             }
+
+
+            resultImg.classList.add("hidden");
+            calculationTotal.classList.add("total");
+
+            const totalDiv = document.createElement("div");
+            totalDiv.classList.add('total-wrapper')
+            totalDiv.innerHTML = `
+            <div class="total-payment">
+                <span>Ежемесячный платеж:</span>
+                <span>${firstPayloat.toFixed(2)} → ${lastPayloat.toFixed(2)}</span>
+            </div>
+            <div class="total-procent">
+                <span>Начисленные проценты:</span>
+                <span>${interestCharges.toFixed(2)}</span>
+            </div>
+            <div class="total-total">
+                <span>Общая выплата:</span>
+                <span>${totalPayout.toFixed(2)}</span>
+            </div>
+            
+            `;
+
+            resultDiv.innerHTML = "";
+
+            resultDiv.append(totalDiv)
 
             console.log("Ежемесячный платеж первый", firstPayloat.toFixed(2))
             console.log("Ежемесячный платеж последний", lastPayloat.toFixed(2))
@@ -383,6 +444,32 @@ document.addEventListener('DOMContentLoaded', function () {
         `
         paymentScheduleList.prepend(title);
 
+
+        resultImg.classList.add("hidden");
+        calculationTotal.classList.add("total");
+
+        const totalDiv = document.createElement("div");
+        totalDiv.classList.add('total-wrapper')
+        totalDiv.innerHTML = `
+        <div class="total-payment">
+            <span>Максимальная сумма кредита:</span>
+            <span>${maxSum.toFixed(2)}</span>
+        </div>
+        <div class="total-procent">
+            <span>Начисленные проценты:</span>
+            <span>${interestCharges.toFixed(2)}</span>
+        </div>
+        <div class="total-total">
+            <span>Общая выплата:</span>
+            <span>${totalPayout.toFixed(2)}</span>
+        </div>
+        
+        `;
+
+        resultDiv.innerHTML = "";
+
+        resultDiv.append(totalDiv)
+
         console.log("Максимальная сумма кредита", maxSum.toFixed(2))
         console.log("Начисленные проценты", interestCharges.toFixed(2))
         console.log("Общая выплата", totalPayout.toFixed(2))
@@ -426,6 +513,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         maskInput();
 
                         paymentSchedule.classList.remove('visible');
+                        calculationTotal.classList.remove('total');
+                        resultImg.classList.remove("hidden");
+                        totalDiv.classList.add("hidden");
                     }
                     //условие для "Рассчет срока кредита"
                     else if (e.target.getAttribute('data-variant') === 'credit-term') {
