@@ -384,6 +384,8 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (e.target === buttonTotal) {
             e.preventDefault();
 
+
+
             paymentSchedule.classList.add("visible")
             paymentScheduleList.classList.add("visible")
 
@@ -417,14 +419,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             calculatePayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue)
-            // //выбор рассчета типа платежа радиокнопками аннуитентный/дифференцированный
-            // if (paymentType === 'annuity') {
-            //     console.log(calculateAnnuityPayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue))
-            //     console.log(data.dateValue)
-            // } else if (paymentType === 'differentiated') {
-            //     console.log("differentiated")
-            //     calculateDifferentiatedPayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue)
-            // }
+
+            paymentSchedule.scrollIntoView({ behavior: 'smooth' });
 
 
         } else {
