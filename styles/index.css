@@ -456,21 +456,30 @@ h1 {
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-    min-width: 900px;
+    width: 100%;
+
+}
+
+.payment-schedule__list {
+
     overflow-x: scroll;
 }
 
-/* .payment-schedule__list {
-    
-} */
 .payment-schedule_top-title,
 .payment-schedule__item {
     display: grid;
     grid-template-columns: 30px repeat(5, 1fr);
     align-items: center;
     padding: 16px 20px;
+    width: 900px;
 
 }
+
+
+
+
+
+
 
 .payment-schedule_top-title {
     color: var(--color-D30);
