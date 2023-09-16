@@ -7,6 +7,7 @@
     <title>Кредитный калькулятор онлайн — рассчитать проценты и ежемесячный платеж, расчёт потребительского кредита
     </title>
     <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -17,18 +18,19 @@
         <h1>Кредитный калькулятор</h1>
         <form class="form">
             <div class="col wrapper">
-                <div class="calculation-option">
-                    <label>Вариант расчета</label>
-                    <p class="calculation-option__text" data-variant="monthly-payment">Расчет ежемесячного платежа</p>
+                <div class="calculation-option" tabindex="1">
+                    <span>Вариант расчета</span>
+                    <p class="calculation-option__text" data-variant="monthly-payment">Расчет ежемесячного платежа
+                    </p>
                     <ul class="calculation-option__list"></ul>
                 </div>
-                <div class="sum-credit">
-                    <label>Сумма кредита</label>
+                <div class="sum-credit" tabindex="2">
+                    <span>Сумма кредита</span>
                     <input class="sum-credit__input" type="text">
                 </div>
                 <div class="row">
                     <div class="credit-term" tabindex="3">
-                        <label>Срок кредита</label>
+                        <span>Срок кредита</span>
                         <input class="credit-term__input" type="text">
                     </div>
                     <div class="month-or-year" tabindex="4">
@@ -39,14 +41,18 @@
                 </div>
                 <div class="row">
                     <div class="count-procent" tabindex="5">
-                        <label>Ставка</label>
+                        <span>Ставка</span>
                         <input type="text" class="count-procent__input">
                     </div>
-                    <input type="date" class="start-date__input" tabindex="6">
+                    <div class="start-data" tabindex="6">
+                        <label>Начало выплат</label>
+                        <input type="date" class="start-date__input">
+                    </div>
+
                 </div>
                 <div class="bottom">
-                    <div class="question">
-                        <span tabindex="7">Тип платежей</span>
+                    <div class="question" tabindex="7">
+                        <span>Тип платежей</span>
                         <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M10 17.25A7.25 7.25 0 0 1 2.75 10 7.25 7.25 0 0 1 10 2.75 7.25 7.25 0 0 1 17.25 10 7.25 7.25 0 0 1 10 17.25Z"
@@ -63,12 +69,12 @@
                             Сначала платите больше, в конце меньше
                         </div>
                     </div>
-                    <div class="toggle-button" tabindex="8">
-                        <label class="box-radio">
+                    <div class="toggle-button">
+                        <label class="box-radio" tabindex="8">
                             <input type="radio" id="annuity" name="typeCredit" checked="checked" value="annuity">
                             <span class="checkmark">Аннуитетный</span>
                         </label>
-                        <label class="box-radio">
+                        <label class="box-radio" tabindex="9">
                             <input type="radio" id="differentiated" name="typeCredit" value="differentiated">
                             <span class="checkmark">Дифференцированый</span>
                         </label>
@@ -209,6 +215,7 @@
             </ul>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://unpkg.com/imask"></script>
     <script src="./main.js"></script>
 

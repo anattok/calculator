@@ -1,40 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector(".form");
-
     const calculationOption = document.querySelector(".calculation-option");
     const calculationOptionList = document.querySelector(".calculation-option__list");
     const calculationOptionText = document.querySelector(".calculation-option__text");
-
     const sumCredit = document.querySelector(".sum-credit");
     const sumCreditInput = document.querySelector(".sum-credit__input");
-
     const creditTerm = document.querySelector(".credit-term");
     const creditTermInput = document.querySelector(".credit-term__input");
-
     const monthOrYear = document.querySelector(".month-or-year");
     const monthOrYearList = document.querySelector(".month-or-year__list");
     const monthOrYearListText = document.querySelector(".month-or-year__text");
-
     const countProcent = document.querySelector(".count-procent");
     const countProcentInput = document.querySelector(".count-procent__input");
-
     const startDateInput = document.querySelector(".start-date__input");
-
-
     const bottomBox = document.querySelector(".bottom");
-
     const buttonTotal = document.querySelector(".calculation__button");
-
     const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
+    const startPaymentDate = document.querySelector(".start-data");
+    const startPaymentDateInput = document.querySelector(".start-date__input");
     const resultImg = document.querySelector(".result__image");
-
     const paymentSchedule = document.querySelector('.payment-schedule')
     const paymentScheduleList = document.querySelector('.payment-schedule__list')
-
-
-
-
-
 
 
     sumCreditInput.value = 1000000;
@@ -276,20 +261,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-
-
-
-
-
-
-
-
-
     document.addEventListener('click', (e) => {
-
+        //блок"Вариант расчета"
         if (e.target === calculationOption) {
 
-            resetActive()
+            resetActive();
 
             if (!calculationOption.classList.contains('active')) {
                 calculationOption.classList.add('active');
@@ -336,11 +312,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         maskInput();
                     }
                 })
+
             } else if (calculationOption.classList.contains('active')) {
-                resetActive()
+
+                resetActive();
             }
             //блок"Сумма Кредита"
         } else if (e.target === sumCredit) {
+
             resetActive();
 
             if (!sumCredit.classList.contains('active')) {
@@ -350,15 +329,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             //блок"Срок Кредита"
         } else if (e.target === creditTerm || e.target === creditTermInput) {
+
             resetActive();
 
             if (!creditTerm.classList.contains('active')) {
                 creditTerm.classList.add('active')
                 creditTerm.classList.add('transparent');
-                creditTermInput.focus();
+                creditTermInput.active();
             }
             //блок"Месяцев или лет"
         } else if (e.target === monthOrYear) {
+
             resetActive();
 
             if (!monthOrYear.classList.contains('active')) {
@@ -380,6 +361,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     }
                 })
+            } else if (monthOrYear.classList.contains('active')) {
+                resetActive();
             }
             //блок"Ставка"
         } else if (e.target === countProcent || e.target === countProcentInput) {
@@ -393,8 +376,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             }
 
-            //действия кнпки 'Рассчет'"
-        } else if (e.target === buttonTotal) {
+
+        } else if (e.target === startPaymentDate) {
+            startPaymentDateInput.focus();
+        }
+        //действия кнпки 'Рассчет'"
+        else if (e.target === buttonTotal) {
             e.preventDefault();
 
             paymentSchedule.classList.add("visible")
@@ -440,10 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // }
 
 
-        }
-
-
-        else {
+        } else {
 
             resetActive()
         }
@@ -481,7 +465,11 @@ document.addEventListener('DOMContentLoaded', function () {
         IMask(creditTermInput, maskOptionsCount);
         IMask(countProcentInput, maskOptionsProcent);
 
-
+        flatpickr(startPaymentDateInput, {
+            defaultDate: 'today', // Устанавливаем сегодняшнюю дату по умолчанию
+            dateFormat: 'Y-m-d', // Формат даты
+            disableMobile: true, // Отключаем мобильную версию datepicker
+        });
 
     }
 

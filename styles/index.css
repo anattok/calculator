@@ -88,7 +88,6 @@ h1 {
     flex-grow: 1;
 }
 
-
 /* начало блока "вариант рассчета" */
 .calculation-option {
     width: 100%;
@@ -99,13 +98,18 @@ h1 {
     position: relative;
     transition: all 0.2s;
     margin-bottom: 10px;
-    cursor: pointer;
+    cursor: text;
 }
 
+.calculation-option:hover {
+    border: 1px solid #ccc;
+}
 
+.calculation-option.active:hover {
+    border: 1px solid var(--color-B100);
+}
 
-
-.calculation-option label {
+.calculation-option span {
     position: absolute;
     top: 8px;
     left: 16px;
@@ -161,26 +165,35 @@ h1 {
     position: relative;
     transition: all 0.2s;
     margin-bottom: 10px;
+    cursor: text;
 }
 
 
-.sum-credit label {
+.sum-credit span {
     position: absolute;
     top: 8px;
     left: 16px;
     font-size: 14px;
     opacity: 0.5;
+    pointer-events: none;
 }
 
 .sum-credit input {
     border: none;
     background-color: transparent;
     font-size: 16px;
-    pointer-events: none;
 }
 
 .sum-credit input:focus {
     outline: none;
+}
+
+.sum-credit:hover {
+    border: 1px solid #ccc;
+}
+
+.sum-credit.active:hover {
+    border: 1px solid var(--color-B100);
 }
 
 /* начало блока "Срок кредита" */
@@ -194,6 +207,7 @@ h1 {
     flex: 0 0 50%;
     max-width: 50%;
     margin-bottom: 10px;
+    cursor: text;
 
 }
 
@@ -203,17 +217,24 @@ h1 {
     font-size: 16px;
 }
 
-.credit-term label {
+.credit-term span {
     position: absolute;
     top: 8px;
     left: 16px;
     font-size: 14px;
     opacity: 0.5;
-    pointer-events: none;
 }
 
 .credit-term input:focus {
     outline: none;
+}
+
+.credit-term:hover {
+    border: 1px solid #ccc;
+}
+
+.credit-term.active:hover {
+    border: 1px solid var(--color-B100);
 }
 
 /* начало блока "Вариант расчета" */
@@ -227,7 +248,7 @@ h1 {
     flex: 0 0 50%;
     max-width: 50%;
     margin-bottom: 10px;
-
+    cursor: text;
 }
 
 .month-or-year label {
@@ -237,6 +258,14 @@ h1 {
     font-size: 14px;
     opacity: 0.5;
     pointer-events: none;
+}
+
+.month-or-year:hover {
+    border: 1px solid #ccc;
+}
+
+.month-or-year.active:hover {
+    border: 1px solid var(--color-B100);
 }
 
 .month-or-year__list {
@@ -286,6 +315,7 @@ h1 {
     transition: all 0.2s;
     flex: 0 0 50%;
     max-width: 50%;
+    cursor: text;
 }
 
 .count-procent input {
@@ -298,13 +328,20 @@ h1 {
     outline: none;
 }
 
-.count-procent label {
+.count-procent span {
     position: absolute;
     top: 8px;
     left: 16px;
     font-size: 14px;
     opacity: 0.5;
-    pointer-events: none;
+}
+
+.count-procent:hover {
+    border: 1px solid #ccc;
+}
+
+.count-procent.active:hover {
+    border: 1px solid var(--color-B100);
 }
 
 /* начало блока Калькуляция подсчет */
@@ -348,11 +385,58 @@ h1 {
     transition: all 0.2s;
 }
 
+.result__image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
 
 .calculation__button:hover {
     background-color: var(--color-D100);
 }
 
+
+/* начало блока "Начало выплат" */
+.start-data {
+    padding: 28px 16px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s;
+    flex: 0 0 50%;
+    max-width: 50%;
+    cursor: text;
+}
+
+.start-data input {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.start-data label {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.start-data:hover {
+    border: 1px solid #ccc;
+}
+
+.start-data.active:hover {
+    border: 1px solid var(--color-B100);
+}
+
+.start-date__input:focus {
+    outline: none;
+}
+
+/* начало блока Вопрос-подсказка */
 .question {
     margin: 10px 0;
     color: var(--color-D60);
@@ -363,7 +447,7 @@ h1 {
 
 }
 
-/* начало блока Вопрос-подсказка */
+
 .question span {
     pointer-events: none;
 }
