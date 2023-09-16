@@ -444,9 +444,7 @@ h1 {
     font-size: 14px;
     line-height: 20px;
     position: relative;
-
 }
-
 
 .question span {
     pointer-events: none;
@@ -499,14 +497,12 @@ h1 {
     height: 42px;
     padding: 4px;
     border-radius: 12px;
-
 }
 
 .toggle-button label {
     width: 100%;
     position: relative;
     cursor: pointer;
-
 }
 
 .toggle-button input {
@@ -541,11 +537,9 @@ h1 {
     padding: 30px;
     border-radius: 12px;
     width: 100%;
-
 }
 
 .payment-schedule__list {
-
     overflow-x: scroll;
 }
 
@@ -556,14 +550,7 @@ h1 {
     align-items: center;
     padding: 16px 20px;
     width: 900px;
-
 }
-
-
-
-
-
-
 
 .payment-schedule_top-title {
     color: var(--color-D30);
@@ -591,7 +578,6 @@ h1 {
 
 .payment-schedule_top svg {
     width: 100%;
-
 }
 
 .payment-schedule_top p {
@@ -603,8 +589,6 @@ h1 {
 .payment-schedule__item:nth-child(even) {
     border-radius: 8px;
     background-color: #f5f5f5;
-
-
 }
 
 /* активность для всех блоков */
@@ -632,8 +616,6 @@ h1 {
         flex-direction: column;
     }
 
-
-
     h1 {
         text-align: center;
         font-size: 30px;
@@ -652,10 +634,6 @@ h1 {
         padding: 16px 20px;
         font-size: 14px;
     }
-
-
-
-
 }
 
 

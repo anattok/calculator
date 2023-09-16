@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const typeCredit = document.querySelectorAll('input[name="typeCredit"]')
     const startPaymentDate = document.querySelector(".start-data");
     const startPaymentDateInput = document.querySelector(".start-date__input");
-    const resultImg = document.querySelector(".result__image");
     const paymentSchedule = document.querySelector('.payment-schedule')
     const paymentScheduleList = document.querySelector('.payment-schedule__list')
 
@@ -63,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             calculationOptionList.append(li);
         })
     }
+
     renderCalculationOptionList(variansOptions);
 
     const renderMonthOrYear = (arr) => {
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             monthOrYearList.append(li);
         })
     }
+
     renderMonthOrYear(monthOrYearOptions);
 
     const resetActive = () => {
@@ -286,30 +287,37 @@ document.addEventListener('DOMContentLoaded', function () {
                         variansOptions.unshift(...variansOptions.splice(index, 1))
 
                         renderCalculationOptionList(variansOptions);
+
                     }
                     //условие для "Рассчет максимальной суммы кредита"
                     if ((e.target.getAttribute('data-variant') === 'maximum-loan-amount')) {
                         bottomBox.classList.add("hidden");
                         sumCreditInput.value = 20000;
-                        sumCredit.querySelector('label').innerHTML = 'Ежемесячный платеж';
+                        sumCredit.querySelector('span').innerHTML = 'Ежемесячный платеж';
 
                         maskInput();
+
+                        paymentSchedule.classList.remove('visible');
                     }
                     //условие для "Рассчет срока кредита"
                     else if (e.target.getAttribute('data-variant') === 'credit-term') {
                         bottomBox.classList.add("hidden");
                         sumCreditInput.value = 1000000;
-                        sumCredit.querySelector('label').innerHTML = 'Сумма кредита';
+                        sumCredit.querySelector('span').innerHTML = 'Сумма кредита';
 
                         maskInput();
+
+                        paymentSchedule.classList.remove('visible');
                     }
                     //условие для "Расчет ежемесячного платежа"
                     else if (e.target.getAttribute('data-variant') === 'monthly-payment') {
                         bottomBox.classList.remove("hidden");
                         sumCreditInput.value = 1000000;
-                        sumCredit.querySelector('label').innerHTML = 'Сумма кредита';
+                        sumCredit.querySelector('span').innerHTML = 'Сумма кредита';
 
                         maskInput();
+
+                        paymentSchedule.classList.remove('visible');
                     }
                 })
 
@@ -383,8 +391,6 @@ document.addEventListener('DOMContentLoaded', function () {
         //действия кнпки 'Рассчет'"
         else if (e.target === buttonTotal) {
             e.preventDefault();
-
-
 
             paymentSchedule.classList.add("visible")
             paymentScheduleList.classList.add("visible")
@@ -465,6 +471,7 @@ document.addEventListener('DOMContentLoaded', function () {
             defaultDate: 'today', // Устанавливаем сегодняшнюю дату по умолчанию
             dateFormat: 'Y-m-d', // Формат даты
             disableMobile: true, // Отключаем мобильную версию datepicker
+            locale: "ru"
         });
 
     }
