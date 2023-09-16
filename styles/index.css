@@ -432,6 +432,10 @@ h1 {
     border: 1px solid var(--color-B100);
 }
 
+.start-date__input {
+    width: 100%;
+}
+
 .start-date__input:focus {
     outline: none;
 }

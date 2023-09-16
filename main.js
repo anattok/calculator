@@ -143,12 +143,18 @@ document.addEventListener('DOMContentLoaded', function () {
             // Рассчитываем аннуитетный платеж
             const annuityPayment = principal * annuityFactor;
 
+            let interestCharges = 0;
+            let totalPayout = 0;
+
+
             // Итерируемся через каждый месяц и рассчитываем платежи
             let balance = principal;
             for (let i = 1; i <= monthCount; i++) {
+                //Выплата процентов
                 const interestPayment = balance * monthlyInterestRate;
+                //основной платеж
                 const principalPayment = annuityPayment - interestPayment;
-                balance -= principalPayment;
+                balance = balance - principalPayment;
 
                 const paymentDate = new Date(date);
                 paymentDate.setMonth(paymentDate.getMonth() + i);
@@ -162,7 +168,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     balance: balance.toFixed(2),
                 };
                 result.push(payment);
+
+                interestCharges += Number(interestPayment.toFixed(2));
+                totalPayout += Number(annuityPayment);
             }
+
+            console.log("Ежемесячный платеж", annuityPayment.toFixed(2))
+            console.log("Начисленные проценты", interestCharges.toFixed(2))
+            console.log("Общая выплата", totalPayout.toFixed(2))
 
 
 
@@ -172,8 +185,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // платеж по основному долгу
             const principalPayment = parseFloat(Number((principal / monthCount)).toFixed(2));
 
-            let countAllProcent = 0
-
+            let interestCharges = 0;
+            let totalPayout = 0;
+            let firstPayloat = 0;
+            let lastPayloat = 0;
 
             for (let i = 1; i <= monthCount; i++) {
                 const currentDate = new Date(date);
@@ -186,10 +201,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 //начисленные проценты в этом месяце, зависит от каоличества дней в месяце
                 const countProcent = parseFloat(Number(((principalAmount * annualInterestRate * lastDay) / 365) / 100).toFixed(2));
-                console.log(countProcent)
 
                 //сколько составит платеж в текущем месяце
                 const totalMonthPayment = parseFloat(Number(principalPayment + countProcent).toFixed(2));
+
+                if (i === 1) {
+                    firstPayloat = totalMonthPayment;
+                }
+
+                if (i === +monthCount) {
+                    lastPayloat = totalMonthPayment;
+                }
 
                 // "ДАТА ПЛАТЕЖА": normalTypeDate,
                 // "СУММА ПЛАТЕЖА": totalMonthPayment,
@@ -214,9 +236,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 })
 
-                //подсчитаем все проценты переплаты
-                countAllProcent = countAllProcent + countProcent;
+                interestCharges += Number(countProcent.toFixed(2));
+                totalPayout += Number(totalMonthPayment);
+
             }
+
+            console.log("Ежемесячный платеж первый", firstPayloat.toFixed(2))
+            console.log("Ежемесячный платеж последний", lastPayloat.toFixed(2))
+            console.log("Начисленные проценты", interestCharges.toFixed(2))
+            console.log("Общая выплата", totalPayout.toFixed(2))
 
         }
 
@@ -260,6 +288,106 @@ document.addEventListener('DOMContentLoaded', function () {
         paymentScheduleList.prepend(title);
 
     }
+
+    //ОПИСАНИЕ ФУНКЦИИ calculateLoanPayments 
+    // interestRate => ставка
+    // monthlyPayment => месячный платёж
+    // monthOrYear => МЕСЯЦЕВ ИЛИ ЛЕТ
+    // numberOfPayments => КОЛИЧЕСТВО (МЕСЯЦЕВ ИЛИ ЛЕТ)
+    // date => ДАТА
+    const calculateLoanPayments = (interestRate, monthlyPayment, numberOfPayments, monthOrYear, date) => {
+
+        // Точное количество месяцев
+        let monthCount;
+
+        if (monthOrYear === "year") {
+            monthCount = numberOfPayments * 12;
+        } else if (monthOrYear === "month") {
+            monthCount = numberOfPayments;
+        } else {
+            throw new Error("Некорректное значение для monthOrYear. Используйте 'year' или 'month'.");
+        }
+
+        const monthlyInterestRate = (interestRate / 100) / 12;
+        let balance = monthlyPayment / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, monthCount) / (Math.pow(1 + monthlyInterestRate, monthCount) - 1));
+
+        const result = [];
+
+        let maxSum = 0;
+        let interestCharges = 0;
+        let totalPayout = 0;
+
+        for (let i = 1; i <= monthCount; i++) {
+            const interestPayment = balance * monthlyInterestRate;
+            const principalPayment = monthlyPayment - interestPayment;
+            balance -= principalPayment;
+
+            const paymentDate = new Date(date);
+            paymentDate.setMonth(paymentDate.getMonth() + i);
+
+            const payment = {
+                id: i,
+                date: paymentDate.toISOString().slice(0, 10),
+                summ: monthlyPayment,
+                debt: principalPayment.toFixed(2),
+                procent: interestPayment.toFixed(2),
+                balance: balance.toFixed(2),
+            };
+
+            result.push(payment);
+
+
+            interestCharges += Number(interestPayment.toFixed(2));
+            totalPayout += Number(monthlyPayment);
+            maxSum += Number(principalPayment.toFixed(2));
+        }
+
+        paymentScheduleList.innerHTML = "";
+
+        result.forEach(elem => {
+            const paymentScheduleItem = document.createElement("li");
+            paymentScheduleItem.classList.add("payment-schedule__item")
+            const id = document.createElement("span");
+            const data = document.createElement("span");
+            const summ = document.createElement("span");
+            const debt = document.createElement("span");
+            const procent = document.createElement("span");
+            const balance = document.createElement("span");
+            id.innerHTML = elem.id;
+            data.innerHTML = elem.date;
+            summ.innerHTML = elem.summ;
+            debt.innerHTML = elem.debt;
+            procent.innerHTML = elem.procent;
+            balance.innerHTML = elem.balance;
+            paymentScheduleItem.append(id);
+            paymentScheduleItem.append(data);
+            paymentScheduleItem.append(summ);
+            paymentScheduleItem.append(debt);
+            paymentScheduleItem.append(procent);
+            paymentScheduleItem.append(balance);
+            paymentScheduleList.append(paymentScheduleItem);
+
+
+        })
+
+
+        const title = document.createElement("li");
+        title.classList.add("payment-schedule_top-title")
+        title.innerHTML = `
+                <span>№</span>
+                <span>ДАТА ПЛАТЕЖА</span>
+                <span>СУММА ПЛАТЕЖА</span>
+                <span>ПОГАШЕНИЕ ДОЛГА</span>
+                <span>ПОГАШЕНИЕ ПРОЦЕНТОВ</span>
+                <span>ОСТАТОК ДОЛГА</span>
+        `
+        paymentScheduleList.prepend(title);
+
+        console.log("Максимальная сумма кредита", maxSum.toFixed(2))
+        console.log("Начисленные проценты", interestCharges.toFixed(2))
+        console.log("Общая выплата", totalPayout.toFixed(2))
+    }
+
 
 
     document.addEventListener('click', (e) => {
@@ -424,7 +552,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 paymentTypeValue: paymentType
             }
 
-            calculatePayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue)
+            if (calculationOptionText.getAttribute('data-variant') === 'monthly-payment') {
+
+                calculatePayment(data.summValue, data.bidValue, data.monthOrYearOptionValue, data.termValue, data.dateValue)
+
+            } else if (calculationOptionText.getAttribute('data-variant') === 'maximum-loan-amount') {
+                // (interestRate, monthlyPayment, numberOfPayments, monthOrYear, date)
+
+                calculateLoanPayments(data.bidValue, data.summValue, data.termValue, data.monthOrYearOptionValue, data.dateValue)
+
+            } else if (calculationOptionText.getAttribute('data-variant') === 'credit-term') {
+
+                console.log("error")
+
+            }
+
+
+
+
+
 
             paymentSchedule.scrollIntoView({ behavior: 'smooth' });
 
