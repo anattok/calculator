@@ -2,8 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const calculationOption = document.querySelector(".calculation-option");
     const calculationOptionList = document.querySelector(".calculation-option__list");
     const calculationOptionText = document.querySelector(".calculation-option__text");
+
     const sumCredit = document.querySelector(".sum-credit");
     const sumCreditInput = document.querySelector(".sum-credit__input");
+
+    const monthlyPayment = document.querySelector(".monthly-payment");
+    const monthlyPaymentInput = document.querySelector(".monthly-payment__input");
+
     const creditTerm = document.querySelector(".credit-term");
     const creditTermInput = document.querySelector(".credit-term__input");
     const monthOrYear = document.querySelector(".month-or-year");
@@ -24,13 +29,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const calculationContent = document.querySelector('.calculation__content');
     const calculationTotal = document.querySelector('.calculation__total');
 
+    const wrapper = document.querySelector('.wrapper__top');
 
 
+    const resetValuesInput = () => {
 
+        creditTermInput.value = 12;
+        countProcentInput.value = 10;
 
-    sumCreditInput.value = 1000000;
-    creditTermInput.value = 12;
-    countProcentInput.value = 10;
+        if (monthlyPaymentInput) {
+            monthlyPaymentInput.value = 20000;
+        }
+
+        if (sumCreditInput) {
+            sumCreditInput.value = 1000000;
+        }
+    }
+
+    resetValuesInput();
 
     const variansOptions = [
         {
@@ -87,14 +103,16 @@ document.addEventListener('DOMContentLoaded', function () {
     renderMonthOrYear(monthOrYearOptions);
 
     const resetActive = () => {
-        calculationOption.classList.remove('active')
-        calculationOptionList.classList.remove('visible')
-        calculationOption.classList.remove('transparent')
-        sumCredit.classList.remove('active')
-        sumCredit.classList.remove('transparent')
-        creditTerm.classList.remove('active')
+        calculationOption.classList.remove('active');
+        calculationOptionList.classList.remove('visible');
+        calculationOption.classList.remove('transparent');
+        sumCredit.classList.remove('active');
+        sumCredit.classList.remove('transparent');
+        monthlyPayment.classList.remove('active');
+        monthlyPayment.classList.remove('transparent');
+        creditTerm.classList.remove('active');
         creditTerm.classList.remove('transparent');
-        monthOrYear.classList.remove('active')
+        monthOrYear.classList.remove('active');
         monthOrYearList.classList.remove('visible');
         monthOrYear.classList.remove('transparent');
         countProcent.classList.remove('active');
@@ -336,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    //ОПИСАНИЕ ФУНКЦИИ calculateLoanPayments 
+    //ОПИСАНИЕ ФУНКЦИИ calculateLoanPayments  Расчет максимальной суммы кредита
     // interestRate => ставка
     // monthlyPayment => месячный платёж
     // monthOrYear => МЕСЯЦЕВ ИЛИ ЛЕТ
@@ -483,39 +501,51 @@ document.addEventListener('DOMContentLoaded', function () {
                     //условие для "Рассчет максимальной суммы кредита"
                     if ((e.target.getAttribute('data-variant') === 'maximum-loan-amount')) {
                         bottomBox.classList.add("hidden");
-                        sumCreditInput.value = 20000;
-                        sumCredit.querySelector('span').innerHTML = 'Ежемесячный платеж';
-
+                        resetValuesInput();
                         maskInput();
 
                         paymentSchedule.classList.remove('visible');
                         calculationContent.classList.remove("hidden");
                         calculationTotal.classList.add("hidden");
+
+                        wrapper.classList.remove("option-term");
+                        wrapper.classList.add("option-maximum");
+                        wrapper.classList.remove("option-monthly");
+
+
 
                     }
                     //условие для "Рассчет срока кредита"
                     else if (e.target.getAttribute('data-variant') === 'credit-term') {
                         bottomBox.classList.add("hidden");
-                        sumCreditInput.value = 1000000;
-                        sumCredit.querySelector('span').innerHTML = 'Сумма кредита';
-
+                        resetValuesInput();
                         maskInput();
 
                         paymentSchedule.classList.remove('visible');
                         calculationContent.classList.remove("hidden");
                         calculationTotal.classList.add("hidden");
+
+                        wrapper.classList.add("option-term");
+                        wrapper.classList.remove("option-maximum");
+                        wrapper.classList.remove("option-monthly");
+
+
                     }
                     //условие для "Расчет ежемесячного платежа"
                     else if (e.target.getAttribute('data-variant') === 'monthly-payment') {
                         bottomBox.classList.remove("hidden");
-                        sumCreditInput.value = 1000000;
-                        sumCredit.querySelector('span').innerHTML = 'Сумма кредита';
-
+                        resetValuesInput();
                         maskInput();
 
                         paymentSchedule.classList.remove('visible');
                         calculationContent.classList.remove("hidden");
                         calculationTotal.classList.add("hidden");
+
+                        wrapper.classList.remove("option-term");
+                        wrapper.classList.remove("option-maximum");
+                        wrapper.classList.add("option-monthly");
+
+
                     }
                 })
 
@@ -534,7 +564,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 sumCreditInput.focus();
             }
             //блок"Срок Кредита"
-        } else if (e.target === creditTerm || e.target === creditTermInput) {
+        } else if (e.target === monthlyPayment) {
+
+            resetActive();
+
+            if (!monthlyPayment.classList.contains('active')) {
+                monthlyPayment.classList.add('active')
+                monthlyPayment.classList.add('transparent')
+                monthlyPaymentInput.focus();
+            }
+
+
+        }
+        else if (e.target === creditTerm || e.target === creditTermInput) {
 
             resetActive();
 
@@ -578,10 +620,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 countProcent.classList.add('active');
                 countProcent.classList.add('transparent');
                 countProcentInput.focus();
-
-
             }
-
 
         } else if (e.target === startPaymentDate) {
             startPaymentDateInput.focus();
@@ -595,6 +634,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const option = calculationOptionText.getAttribute('data-variant');
             const summ = sumCreditInput.value.split(" ").slice(0, -1).join("");
+            const monthlyPaymentSumm = monthlyPaymentInput.value.split(" ").slice(0, -1).join("");
             const term = creditTermInput.value;
             const monthOrYearOption = monthOrYearListText.getAttribute('data-monthoryear');
             const bid = countProcentInput.value.split(" ").slice(0, -1).join("");
@@ -615,6 +655,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = {
                 calculationOptionValue: option,
                 summValue: summ,
+                monthlyPaymentValue: monthlyPaymentSumm,
                 termValue: term,
                 monthOrYearOptionValue: monthOrYearOption,
                 bidValue: bid,
@@ -629,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (calculationOptionText.getAttribute('data-variant') === 'maximum-loan-amount') {
                 // (interestRate, monthlyPayment, numberOfPayments, monthOrYear, date)
 
-                calculateLoanPayments(data.bidValue, data.summValue, data.termValue, data.monthOrYearOptionValue, data.dateValue)
+                calculateLoanPayments(data.bidValue, data.monthlyPaymentValue, data.termValue, data.monthOrYearOptionValue, data.dateValue)
 
             } else if (calculationOptionText.getAttribute('data-variant') === 'credit-term') {
 
@@ -674,9 +715,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        const maskMontlyPayment = {
+            lazy: false,
+            mask: 'num ₽',
+            blocks: {
+                num: {
+                    mask: Number,
+                    thousandsSeparator: ' '
+                }
+            }
+        }
+
         IMask(sumCreditInput, maskOptions);
         IMask(creditTermInput, maskOptionsCount);
         IMask(countProcentInput, maskOptionsProcent);
+        IMask(monthlyPaymentInput, maskMontlyPayment);
 
         flatpickr(startPaymentDateInput, {
             defaultDate: 'today', // Устанавливаем сегодняшнюю дату по умолчанию

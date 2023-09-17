@@ -158,45 +158,118 @@ h1 {
 .wrapper__top {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 60px);
     grid-column-gap: 8px;
     grid-row-gap: 16px;
 }
 
-.calculation-option {
+
+
+/*---------------option-monthly----------------------*/
+.option-monthly {
+    grid-template-rows: repeat(4, 60px);
+}
+
+.option-monthly .calculation-option {
     grid-area: 1 / 1 / 2 / 5;
 }
 
-.sum-credit {
-    grid-area: 2 / 1 / 3 / 5;
-}
-
-.credit-term {
+.option-monthly .credit-term {
     grid-area: 3 / 1 / 4 / 3;
 }
 
-.month-or-year {
-    grid-area: 3 / 3 / 4 / 5;
+.option-monthly .sum-credit {
+    grid-area: 2 / 1 / 3 / 5;
+}
+
+.option-monthly .monthly-payment {
+    display: none;
+}
+
+.option-monthly .count-procent {
+    grid-area: 4 / 1 / 4 / 3;
+}
+
+.option-monthly .start-data {
+    grid-area: 4 / 3 / 4 / 5;
+}
+
+.option-monthly .month-or-year {
+    grid-area: 3 / 3 / 3 / 5;
     padding: 0px 16px;
     display: flex;
     align-items: center;
 }
 
-.count-procent {
-    grid-area: 4 / 1 / 5 / 3;
-}
-
-.start-data {
-    grid-area: 4 / 3 / 5 / 5;
-}
-
-.wrapper-term {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+/*---------------.option-term----------------------*/
+.option-term {
     grid-template-rows: repeat(3, 60px);
-    grid-column-gap: 8px;
-    grid-row-gap: 16px;
 }
+
+.option-term .calculation-option {
+    grid-area: 1 / 1 / 2 / 5;
+}
+
+.option-term .credit-term {
+    display: none;
+}
+
+.option-term .month-or-year {
+    display: none;
+}
+
+.option-term .sum-credit {
+    grid-area: 2 / 1 / 2 / 3;
+}
+
+.option-term .monthly-payment {
+    grid-area: 2 / 3 / 2 / 5;
+}
+
+.option-term .count-procent {
+    grid-area: 3 / 1 / 3 / 3;
+}
+
+.option-term .start-data {
+    grid-area: 3 / 3 / 3 / 5;
+}
+
+/*---------------option-maximum----------------------*/
+.option-maximum {
+    grid-template-rows: repeat(4, 60px);
+}
+
+.option-maximum .calculation-option {
+    grid-area: 1 / 1 / 2 / 5;
+}
+
+.option-maximum .monthly-payment {
+    grid-area: 2 / 1 / 2 / 5;
+}
+
+.option-maximum .credit-term {
+    grid-area: 3 / 1 / 3 / 3;
+}
+
+.option-maximum .count-procent {
+    grid-area: 4 / 1 / 4 / 3;
+}
+
+.option-maximum .month-or-year {
+    grid-area: 3 / 3 / 3 / 5;
+    padding: 0px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.option-maximum .sum-credit {
+    display: none;
+}
+
+.option-maximum .start-data {
+    grid-area: 4 / 3 / 4 / 5;
+}
+
+
 
 .calculation {
     width: 370px;
