@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    //ОПИСАНИЕ ФУНКЦИИ calculatePayment 
+    //ОПИСАНИЕ ФУНКЦИИ calculatePayment  Расчет ежемесячного платежа
     // principal => СУММА КРЕДИТА
     // annualInterestRate => СТАВКА
     // monthOrYear => МЕСЯЦЕВ ИЛИ ЛЕТ
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const monthlyInterestRate = (interestRate / 100) / 12;
-        let balance = monthlyPayment / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, monthCount) / (Math.pow(1 + monthlyInterestRate, monthCount) - 1));
+        let currentBalance = monthlyPayment / (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, monthCount) / (Math.pow(1 + monthlyInterestRate, monthCount) - 1));
 
         const result = [];
 
@@ -383,9 +383,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalPayout = 0;
 
         for (let i = 1; i <= monthCount; i++) {
-            const interestPayment = balance * monthlyInterestRate;
+            const interestPayment = currentBalance * monthlyInterestRate;
             const principalPayment = monthlyPayment - interestPayment;
-            balance -= principalPayment;
+            currentBalance -= principalPayment;
 
             const paymentDate = new Date(date);
             paymentDate.setMonth(paymentDate.getMonth() + i);
@@ -396,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 summ: monthlyPayment,
                 debt: principalPayment.toFixed(2),
                 procent: interestPayment.toFixed(2),
-                balance: balance.toFixed(2),
+                balance: currentBalance.toFixed(2),
             };
 
             result.push(payment);
@@ -469,6 +469,128 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Максимальная сумма кредита", maxSum.toFixed(2))
         console.log("Начисленные проценты", interestCharges.toFixed(2))
         console.log("Общая выплата", totalPayout.toFixed(2))
+    }
+
+    //ОПИСАНИЕ ФУНКЦИИ calculateLoanTerm  Расчет срока кредита
+    //   loanAmount => Сумма кредита
+    //   monthlyPayment => Ежемесячный платеж
+    //   interestRate => Процентная ставка (годовая)
+    //   startDate => Начальная дата выплат (год, месяц, день)
+    const calculateLoanTerm = (loanAmount, monthlyPayment, interestRate, startDate) => {
+        // Преобразуем процентную ставку в месячную долю
+        const monthlyInterestRate = (interestRate / 100) / 12;
+
+        // Вычисляем количество месяцев, необходимых для погашения кредита
+        const numberOfMonths = Math.log(monthlyPayment / (monthlyPayment - (loanAmount * monthlyInterestRate))) /
+            Math.log(1 + monthlyInterestRate);
+
+        // Рассчитываем полные годы и остаток месяцев
+        const years = Math.floor(numberOfMonths / 12);
+        const months = Math.round(numberOfMonths % 12);
+
+
+        const result = [];
+
+
+        let currentBalance = loanAmount;
+
+
+        for (let i = 1; i <= numberOfMonths + 1; i++) {
+            // Рассчитываем проценты и сумму гашения долга для текущего платежа
+            const interestPayment = currentBalance * monthlyInterestRate;
+            let principalPayment = monthlyPayment - interestPayment;
+
+            // Проверяем, чтобы остаток долга не стал отрицательным
+            if (currentBalance < principalPayment) {
+                principalPayment = currentBalance;
+                currentBalance = 0;
+            } else {
+                currentBalance = currentBalance - principalPayment;
+            }
+
+            const paymentDate = new Date(startDate);
+            paymentDate.setMonth(paymentDate.getMonth() + i);
+            // Создаем объект для хранения данных о платеже
+            const payment = {
+                id: i,
+                date: paymentDate.toISOString().slice(0, 10),
+                summ: monthlyPayment,
+                debt: principalPayment.toFixed(2),
+                procent: interestPayment.toFixed(2),
+                balance: currentBalance.toFixed(2),
+            };
+
+
+            result.push(payment);
+
+        }
+
+        // Рассчитываем начисленные проценты и общую выплату
+        const totalInterest = (monthlyPayment * numberOfMonths) - loanAmount;
+        const totalPayment = monthlyPayment * numberOfMonths;
+
+        paymentScheduleList.innerHTML = "";
+
+        result.forEach(elem => {
+            const paymentScheduleItem = document.createElement("li");
+            paymentScheduleItem.classList.add("payment-schedule__item")
+            const id = document.createElement("span");
+            const data = document.createElement("span");
+            const summ = document.createElement("span");
+            const debt = document.createElement("span");
+            const procent = document.createElement("span");
+            const balance = document.createElement("span");
+            id.innerHTML = elem.id;
+            data.innerHTML = elem.date;
+            summ.innerHTML = elem.summ;
+            debt.innerHTML = elem.debt;
+            procent.innerHTML = elem.procent;
+            balance.innerHTML = elem.balance;
+            paymentScheduleItem.append(id);
+            paymentScheduleItem.append(data);
+            paymentScheduleItem.append(summ);
+            paymentScheduleItem.append(debt);
+            paymentScheduleItem.append(procent);
+            paymentScheduleItem.append(balance);
+            paymentScheduleList.append(paymentScheduleItem);
+        })
+
+
+        const title = document.createElement("li");
+        title.classList.add("payment-schedule_top-title")
+        title.innerHTML = `
+                <span>№</span>
+                <span>ДАТА ПЛАТЕЖА</span>
+                <span>СУММА ПЛАТЕЖА</span>
+                <span>ПОГАШЕНИЕ ДОЛГА</span>
+                <span>ПОГАШЕНИЕ ПРОЦЕНТОВ</span>
+                <span>ОСТАТОК ДОЛГА</span>
+        `
+        paymentScheduleList.prepend(title);
+
+
+        calculationContent.classList.add("hidden");
+        calculationTotal.classList.remove("hidden");
+
+        calculationTotal.innerHTML = `
+            <div class="calculation__payment-count">
+                <span>Срок кредита:</span>
+                <span>${years} год(а) и ${months} месяц(ев)</span>
+            </div>
+            <div class="calculation__procent-count">
+                <span>Начисленные проценты:</span>
+                <span>${totalInterest.toFixed(2)}</span>
+            </div>
+            <div class="calculation__total-count">
+                <span>Общая выплата:</span>
+                <span>${totalPayment.toFixed(2)}</span>
+            </div>
+            
+            `;
+
+        console.log("Срок кредита", `${years} год(а) и ${months} месяц(ев)`)
+        console.log("Начисленные проценты", totalInterest.toFixed(2))
+        console.log("Общая выплата", totalPayment.toFixed(2))
     }
 
     document.addEventListener('click', (e) => {
@@ -674,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             } else if (calculationOptionText.getAttribute('data-variant') === 'credit-term') {
 
-                console.log("error")
+                calculateLoanTerm(data.summValue, data.monthlyPaymentValue, data.bidValue, data.dateValue)
 
             }
 
