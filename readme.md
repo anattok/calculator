@@ -23,6 +23,8 @@
 - flatpickr
 - imask
 
+![Картинка](https://raw.githubusercontent.com/anattok/calculator/master/pic.png)
+
 ```sh
 Формула расчета аннуитетного платежа
 Х = С \* К
